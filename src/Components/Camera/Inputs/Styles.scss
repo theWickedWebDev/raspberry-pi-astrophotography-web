@@ -1,0 +1,36 @@
+.CameraLcdItem_ListItem_LargeHeader {
+    font-weight: 600;
+    align-items: center;
+    display: flex;
+    justify-self: center;
+    text-transform: none;
+}
+
+.CameraLcdItem_BW {
+    color: #fff;
+    background: #000;
+    border-radius: 3;
+    background: #000;
+    padding: 3px;
+    font-size: .6em;
+    vertical-align: middle;
+}
+
+.CameraLcdItem_BW--disabled {
+    background: #a8a8a8;
+}
+
+.CameraLcdItem_Button {
+    width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+.CameraLcdItem_Display {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border: solid 2px #f3f3f3;
+    height: 100%;
+    border-radius: 4px;
+}

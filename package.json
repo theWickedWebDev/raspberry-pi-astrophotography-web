@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.9",
+    "@mui/joy": "^5.0.0-beta.13",
     "@mui/material": "^5.14.10",
     "@tanstack/match-sorter-utils": "^8.8.4",
     "@tanstack/react-table": "^8.10.1",
@@ -19,6 +20,9 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.2.7",
     "bootstrap": "^5.3.2",
+    "exif-js": "^2.3.0",
+    "exifreader": "^4.16.0",
+    "moment": "^2.29.4",
     "react": "^18.0.0",
     "react-bootstrap": "^2.9.1",
     "react-bootstrap-sidebar-menu": "^2.0.3",
@@ -27,11 +31,13 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
+    "recoil": "^0.7.7",
     "sass": "^1.69.5",
     "typescript": "^4.0.0"
   },
   "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=10.0.0.190.crt SSL_KEY_FILE=10.0.0.190.key react-scripts start",
+    "start": "react-scripts start",
+    "start-https": "HTTPS=true SSL_CRT_FILE=10.0.0.190.crt SSL_KEY_FILE=10.0.0.190.key react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

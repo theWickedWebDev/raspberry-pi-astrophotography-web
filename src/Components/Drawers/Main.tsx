@@ -1,6 +1,5 @@
 import React from 'react';
 import MainSidebar from './MainSidebar';
-import CaptureDrawer from './CaptureDrawer';
 
 
 export default function () {
@@ -8,7 +7,6 @@ export default function () {
         <div className='AP-Drawers'>
             <React.Fragment>
                 <MainSidebar defaultOpen={false} />
-                <CaptureDrawer defaultOpen={false} />
             </React.Fragment>
         </div>
     );

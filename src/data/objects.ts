@@ -35,10 +35,8 @@ export interface Star {
         label: string;
         deg?: number;
     },
-    dec_hms?: string;
-    ra_hms?: string;
-    dec_dms: number;
-    ra_dms: number;
+    dec: string;
+    ra: string;
 }
 
 export interface Messier {
@@ -68,15 +66,11 @@ const Stars: Star[] = (bsc as Bsc[]).map((star, index) => ({
     constellation: constellations.find(c => c.abbr.toLowerCase() === star.C?.toLowerCase()),
     magnitude: star.V,
     temperature: star.K,
-    dec: star.Dec,
-    ra: star.RA,
     bayerDesignation: star.B,
     flamsteed: star.F,
     visible: isStarVisible(star.Dec, geolocation.latitude),
-    dec_dms: ParseDMS(star.Dec || ''),
-    dec_hms: star.Dec,
-    ra_dms: ParseDMS(star.RA || ''),
-    ra_hms: star.RA,
+    ra: star.RA?.replace(':', 'h').replace(':', 'm') + 's',
+    dec: star.Dec?.replace(':', 'd').replace(':', 'm') + 's',
 }));
 
 const _messier: Messier[] = messier.map(({ recordid, fields }) => ({

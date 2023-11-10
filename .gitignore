@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 .vscode/
 archive/
+
+10.0.0*
+keypair.key

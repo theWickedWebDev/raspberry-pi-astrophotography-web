@@ -14,9 +14,10 @@ import './Styles.scss';
 import Chip from '@mui/material/Chip/Chip';
 import Box from '@mui/material/Box/Box';
 import TableSortLabel from '@mui/material/TableSortLabel';
-
-
-// type Header = 'Image' | 'M' | "Name" | 'Object' | 'RA' | 'DEC' | 'Constellation' | 'Distance' | 'Magnitude';
+import Checkbox from '@mui/material/Checkbox/Checkbox';
+import StarIcon from '@mui/icons-material/Star';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 type Order = 'asc' | 'desc' | undefined;
 type OrderBy = keyof HeaderCell;
@@ -24,48 +25,67 @@ type OrderBy = keyof HeaderCell;
 type HeaderCell = {
     id: keyof Row;
     label: string;
-    isNumeric?: boolean;
     sortable: boolean;
 }
 
 type Row = {
     id: string;
-    image: string;
-    messier: string;
+    image?: string;
+    c: string;
     name: string;
     obj: string;
     ra: string;
     dec: string;
-    const?: Constellation;
-    d: number;
-    m: number;
+    const?: string;
+    d?: number;
+    m?: number;
+    v?: string;
+    captured: boolean;
 }
 
 
 const HeaderCells: HeaderCell[] = [
     { id: 'image', label: 'Image', sortable: false },
-    { id: 'messier', label: 'M', sortable: true },
+    { id: 'c', label: 'ID', sortable: true },
     { id: 'name', label: "Name", sortable: true },
     { id: 'obj', label: 'Object', sortable: true },
     { id: 'ra', label: 'RA', sortable: true },
     { id: 'dec', label: 'DEC', sortable: true },
     { id: 'const', label: 'Constellation', sortable: true },
-    { id: 'd', label: 'Distance', isNumeric: true, sortable: true },
-    { id: 'm', label: 'Magnitude', isNumeric: true, sortable: true },
+    { id: 'd', label: 'Distance', sortable: true },
+    { id: 'm', label: 'Magnitude', sortable: true },
+    { id: 'v', label: 'Visible', sortable: true },
+    { id: 'captured', label: 'Captured', sortable: true },
 ];
 
-const rows: Row[] = catalogData.messier.map(m => ({
+const messierRows: Row[] = catalogData.messier.map((m, i) => ({
     id: m.id,
     image: m.image,
-    messier: m.messier,
+    c: m.messier,
     name: m.name,
     obj: m.object,
     ra: m.ra,
     dec: m.dec,
-    const: m.constellation,
+    const: m.constellation?.name,
     d: m.distance,
-    m: m.magnitude
-}))
+    m: m.magnitude,
+    v: m.visible.label,
+    captured: i % 3 === 0
+}));
+
+const starRows: Row[] = catalogData.stars.filter(s => s.name).map((m, i) => ({
+    id: m.id,
+    c: m.bayerDesignation,
+    name: m.name,
+    obj: 'Star',
+    ra: m.ra,
+    dec: m.dec,
+    v: m.visible.label,
+    const: m.constellation?.name,
+    captured: i % 3 === 0
+}));
+
+const rows: Row[] = [...messierRows, ...starRows];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -78,6 +98,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 const sort = (rows: Row[], order: Order, orderBy: keyof Row) => {
+    console.log(order, orderBy)
     if (order === 'desc') {
         return rows.sort((a, b) => descendingComparator(a, b, orderBy))
     } else if (order === 'asc') {
@@ -88,7 +109,7 @@ const sort = (rows: Row[], order: Order, orderBy: keyof Row) => {
 
 export default function () {
     const [order, setOrder] = useState<Order>()
-    const [orderBy, setOrderBy] = useState<keyof Row>('messier')
+    const [orderBy, setOrderBy] = useState<keyof Row>('c')
 
     const handleRequestSort = (property: keyof Row) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -132,10 +153,12 @@ export default function () {
                     {visibleRows.map(row => (
                         <TableRow key={row.id}>
                             <TableCell>
-                                <div className="ThumbnailImage" style={{ backgroundImage: `url("${row.image}")` }}></div>
+                                {row.image ?
+                                    <div className="ThumbnailImage" style={{ backgroundImage: `url("${row.image}")` }}></div>
+                                    : <StarIcon />}
                             </TableCell>
                             <TableCell>
-                                <Chip size="small" color="primary" label={row.messier} />
+                                <Chip size="small" color="primary" label={row.c} />
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 {row.name}
@@ -143,9 +166,15 @@ export default function () {
                             <TableCell>{row.obj}</TableCell>
                             <TableCell>{row.ra}</TableCell>
                             <TableCell>{row.dec}</TableCell>
-                            <TableCell>{row.const?.name}</TableCell>
+                            <TableCell>{row.const}</TableCell>
                             <TableCell>{row.d}</TableCell>
                             <TableCell>{row.m}</TableCell>
+                            <TableCell>
+                                {row.v === 'Always Visible' && <VisibilityIcon color="info" />}
+                                {row.v === 'Sometimes Visible' && <VisibilityOffIcon color="warning" />}
+                                {row.v === 'Never Visible' && <VisibilityOffIcon color="error" />}
+                            </TableCell>
+                            <TableCell> <Checkbox checked={row.captured} /></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
